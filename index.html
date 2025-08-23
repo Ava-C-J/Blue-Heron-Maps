@@ -13,121 +13,128 @@
       height: 100%;
       width: 100%;
     }
-    </style>
+  </style>
   <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
   <script src="https://js.arcgis.com/4.25/"></script>
-
   <script>
-  document.addEventListener("DOMContentLoaded", function() {
-  require([
-     "esri/config",
-      "esri/Map",
-      "esri/views/MapView",   
-      "esri/Graphic",  
-      "esri/layers/GraphicsLayer",
-      "esri/layers/FeatureLayer",
-      "esri/renderers/UniqueValueRenderer",
-      "esri/widgets/Locate",
-      "esri/widgets/Search",
-      "esri/widgets/Legend",
-      "esri/symbols/PictureMarkerSymbol"
-], function(esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer, UniqueValueRenderer, Locate, Search, Legend, PictureMarkerSymbol) {
+    document.addEventListener("DOMContentLoaded", function() {
+      require([
+        "esri/config",
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/Graphic",
+        "esri/layers/GraphicsLayer",
+        "esri/layers/FeatureLayer",
+        "esri/renderers/UniqueValueRenderer",
+        "esri/widgets/Locate",
+        "esri/widgets/Search",
+        "esri/widgets/Legend",
+        "esri/symbols/PictureMarkerSymbol"
+      ], function(
+        esriConfig,
+        Map,
+        MapView,
+        Graphic,
+        GraphicsLayer,
+        FeatureLayer,
+        UniqueValueRenderer,
+        Locate,
+        Search,
+        Legend,
+        PictureMarkerSymbol
+      ) {
 
- esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurJ1kLPomorD8TrKnUY-69H8k_xONIhZ8kcIboLXTep9_C10dAmnF8WtDsNt0ufTI6XphX36nbQIZA1sStLbpW_RiOh5ffFa3W6QekcMcdA5rRBIQZP3vJrRWPdiAhGouwmAqEq1tYZ1KPTzNbF_7QJnL0xpjT5w4fEm31PNDdvQN2m-wX1uAj1bjDC8vLQN8Si5-PZtpPkJpaHwRn_aFsto.AT1_RSTP1ZbY";
+        esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurJ1kLPomorD8TrKnUY-69H8k_xONIhZ8kcIboLXTep9_C10dAmnF8WtDsNt0ufTI6XphX36nbQIZA1sStLbpW_RiOh5ffFa3W6QekcMcdA5rRBIQZP3vJrRWPdiAhGouwmAqEq1tYZ1KPTzNbF_7QJnL0xpjT5w4fEm31PNDdvQN2m-wX1uAj1bjDC8vLQN8Si5-PZtpPkJpaHwRn_aFsto.AT1_RSTP1ZbY";
         const map = new Map({
-        basemap: "streets-vector" 
-    });
+          basemap: "arcgis-community"
+        });
 
         const view = new MapView({
           map: map,
-          center: [-76.2403663, 36.7213663], 
-          zoom: 13, 
-          container: "viewDiv" 
-        });
-  const LocateButton = new Locate({
-          view: view
+          center: [-76.2403663, 36.7213663],
+          zoom: 13,
+          container: "viewDiv"
         });
 
-        // Add the locate widget to the top left corner of the view
+        const LocateButton = new Locate({
+          view: view
+        });
         view.ui.add(LocateButton, {
           position: "top-left"
         });
 
- const SearchWidget = new Search({
+        const SearchWidget = new Search({
           view: view
         });
-
-        // Add the search widget to the top right corner of the view
         view.ui.add(SearchWidget, {
           position: "bottom-right"
         });
 
-        const HeronSymbol = new PictureMarkerSymbol({
-          url: "goosepng.png", 
+        const HeronSymbol = {
+          type: "picture-marker",
+          url: "HeronIcon.svg",
           width: "50px",
           height: "50px"
-        });
+        };
 
- const HeronPopup = {
-          "title": "Chesapeake Blue Herons",
+        const HeronPopup = {
+          "title": "Chesapeake Blue Heron Statues",
           "content": "<b>Address:</b> {Address}<br><b>Location:</b> {Location}<br><b>Statue Name:</b> {Statue_Name}<br><b>Sponsor Name:</b> {Sponsor_Name}<br><b>Artist:</b> {Artist}<br><b>Pictures:</b> {Pictures}<br><b>Website:</b> {Website_Link}"
         };
 
- const HeronLayer = new FeatureLayer({ 
-   url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_ef453adc1cab4f8abc5c4f3e943092b6_results/FeatureServer",
-   renderer: {
+        const HeronLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Blue_Heron_Statues/FeatureServer",
+          renderer: {
             type: "simple",
             symbol: HeronSymbol,
           },
-popupTemplate: HeronPopup
+          popupTemplate: HeronPopup
         });
 
         map.add(HeronLayer);
 
-const legend = new Legend({
-  view: view,
-  layerInfos: [
-    {
-      layer: HeronLayer,
-      title: "Chesapeake Blue Herons" 
-    }
-     ]
-});
+        const legend = new Legend({
+          view: view,
+          layerInfos: [
+            {
+              layer: HeronLayer,
+              title: "Chesapeake Blue Heron Statues"
+            }
+          ]
+        });
 
-const legendToggleButton = document.createElement("button");
-legendToggleButton.innerHTML = "Toggle Legend";
-legendToggleButton.className = "legend-toggle-btn";
-legendToggleButton.style.position = "absolute";
-legendToggleButton.style.top = "10px";
-legendToggleButton.style.right = "10px";
-legendToggleButton.style.backgroundColor = "#0079c1";
-legendToggleButton.style.color = "white";
-legendToggleButton.style.border = "none";
-legendToggleButton.style.borderRadius = "4px";
-legendToggleButton.style.cursor = "pointer";
+        const legendToggleButton = document.createElement("button");
+        legendToggleButton.innerHTML = "Toggle Legend";
+        legendToggleButton.className = "legend-toggle-btn";
+        legendToggleButton.style.position = "absolute";
+        legendToggleButton.style.top = "10px";
+        legendToggleButton.style.right = "10px";
+        legendToggleButton.style.backgroundColor = "#0079c1";
+        legendToggleButton.style.color = "white";
+        legendToggleButton.style.border = "none";
+        legendToggleButton.style.borderRadius = "4px";
+        legendToggleButton.style.cursor = "pointer";
 
-      let legendVisible = false;
+        let legendVisible = false;
 
-      legendToggleButton.addEventListener("click", function() {
-        if (legendVisible) {
-          view.ui.remove(legend);
-          legendVisible = false;
-        } else {
-          view.ui.add(legend, "bottom-left"); 
-          legendVisible = true;
-        }
-      });
+        legendToggleButton.addEventListener("click", function() {
+          if (legendVisible) {
+            view.ui.remove(legend);
+            legendVisible = false;
+          } else {
+            view.ui.add(legend, "bottom-left");
+            legendVisible = true;
+          }
+        });
 
-      document.body.appendChild(legendToggleButton);
+        document.body.appendChild(legendToggleButton);
 
       });
     });
-        
-</script>
-
+  </script>
 </head>
 <body>
-    <div id="viewDiv"></div>
+  <div id="viewDiv"></div>
 </body>
 </html>
 
