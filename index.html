@@ -44,7 +44,7 @@
         PictureMarkerSymbol
       ) {
 
-        esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurJ1kLPomorD8TrKnUY-69H-sVeGIfPDUf1SohbUBGOHoDln4fQiVKSAvl9IAe4elH9Kon55qRB0CtaB86RLruqlxSwSb49VKaG7Rw1ObdervNt_LXOUmBdGvk2VVecTeS58GLbiH6Fb3W29zbnDO_P6-X2X3oD6wcvGfcW8WItGDbSRSTbFXx28Pb8D1x_J9Mz5WP9uc2uAUQC8lEGoW4vWJCheyfG4twFQ534JdWvkPv3yNdcxi7G2wgNj-edkh2Q..AT1_5piJ1CEt";
+        esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurJ1kLPomorD8TrKnUY-69H-sVeGIfPDUf1SohbUBGOHo2kjJM5tWYk-yL9Y7Ebo3nQRaOHq2Jc2lpH42DNwqQPrjL7LlXp5MSUH3gVCeKM9XNFhe_BcsY09sTHMW_KHX8uMO4Z0_JcJ0ggddIfgs3j9yvusuUkAUKjgHhQAPsBxqrOwCaUbTVSV2hjiIEgXxhlqc_MvZ4d8L-vScxXsTXv4.AT1_RSTP1ZbY";
         const map = new Map({
           basemap: "arcgis-community"
         });
@@ -78,10 +78,28 @@
         };
 
         const HeronPopup = {
-          "title": "Chesapeake Blue Heron Statues",
-          "content": "<b>Address:</b> {Address}<br><b>Location:</b> {Location}<br><b>Statue Name:</b> {Statue_Name}<br><b>Sponsor Name:</b> {Sponsor_Name}<br><b>Artist:</b> {Artist}<br><b>Pictures:</b> {Attachments}<br><b>Website:</b> {Website_Link}"
-        };
-
+  title: "Chesapeake Blue Heron Statues",
+  content: [
+    {
+      type: "text",
+      text: `
+        <b>Address:</b> {Address}<br>
+        <b>Location:</b> {Location}<br>
+        <b>Statue Name:</b> {Statue_Name}<br>
+        <b>Sponsor Name:</b> {Sponsor_Name}<br>
+        <b>Artist:</b> {Artist}<br>
+        <b>Website:</b> {Website_Link}
+      `
+    },
+    {
+      type: "text",
+      text: "<b>Photos:</b>"
+    },
+    {
+      type: "attachments"
+    }
+  ]
+};
         const HeronLayer = new FeatureLayer({
           url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/Blue_Heron_Statues/FeatureServer",
           renderer: {
